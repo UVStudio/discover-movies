@@ -1,29 +1,32 @@
 {
-  "name": "discovermovies",
+  "name": "DiscoverMovies",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:build": "tsc -w",
+    "start:run": "nodemon build/index.js",
+    "start": "concurrently npm:start:*"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UVStudio/discover-movies.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/UVStudio/discover-movies/issues"
   },
   "homepage": "https://github.com/UVStudio/discover-movies#readme",
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  },
   "dependencies": {
     "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.7",
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4"
   }
 }
