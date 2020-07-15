@@ -1,14 +1,13 @@
-import express, { Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
+import { router } from './routes/moviesData';
+
 import bodyParser from 'body-parser';
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('hello');
-});
+const PORT = process.env.PORT || 5000;
 
-app.listen(5000, () => {
-  console.log('Listening to port 5000');
-});
+app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
