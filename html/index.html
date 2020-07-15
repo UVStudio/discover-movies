@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Discover Movies</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -25,173 +25,202 @@
             <div class="grid-body">
               <div class="row">
                 <!-- BEGIN FILTERS -->
-                <div class="col-md-3">
-                  <h2 class="grid-title">
+                <div class="col-md-4">
+                  <h3 class="grid-title">
                     <i class="fa fa-filter"></i> Filters
-                  </h2>
+                  </h3>
                   <hr />
 
                   <!-- BEGIN FILTER BY COUNTRY -->
-                  <h4 class="mt-4">Country</h4>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="country"
-                    placeholder="country"
-                  />
-                  <!-- END FILTER BY COUNTRY -->
-
-                  <!-- BEGIN FILTER BY DATE -->
-                  <h4 class="mt-4">Year of Release</h4>
-                  From
-                  <div class="input-group date form_date">
+                  <form>
+                    <h5 class="mt-4">Country</h5>
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="yyyy"
+                      id="country"
+                      placeholder="country"
                     />
-                  </div>
-                  <input type="hidden" id="dtp_input1" value="" />
+                    <!-- END FILTER BY COUNTRY -->
 
-                  To
-                  <div class="input-group date form_date">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="yyyy"
-                    />
-                  </div>
-                  <input type="hidden" id="dtp_input2" value="" />
-                  <!-- END FILTER BY DATE -->
-
-                  <!-- BEGIN FILTER BY LANGUAGE -->
-                  <h4 class="mt-4">Language</h4>
-                  <div class="dropdown">
-                    <a
-                      class="btn btn-info dropdown-toggle"
-                      href="#"
-                      role="button"
-                      id="dropdownMenuLink"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Choose language
-                    </a>
-
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuLink"
-                    >
-                      <a class="dropdown-item" href="#">English</a>
-                      <a class="dropdown-item" href="#">Chinese</a>
-                      <a class="dropdown-item" href="#">French</a>
-                      <a class="dropdown-item" href="#">Spanish</a>
-                      <a class="dropdown-item" href="#">German</a>
-                      <a class="dropdown-item" href="#">Russian</a>
-                      <a class="dropdown-item" href="#">Hebrew</a>
+                    <!-- BEGIN FILTER BY DATE -->
+                    <h5 class="mt-4">Year of Release</h5>
+                    From
+                    <div class="input-group date form_date">
+                      <input
+                        type="text"
+                        class="form-control mb-2"
+                        placeholder="yyyy"
+                      />
                     </div>
-                  </div>
-                  <!-- END FILTER BY LANGUAGE -->
+                    <input type="hidden" id="dtp_input1" value="" />
+                    To
+                    <div class="input-group date form_date">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="yyyy"
+                      />
+                    </div>
+                    <input type="hidden" id="dtp_input2" value="" />
+                    <!-- END FILTER BY DATE -->
 
-                  <!-- BEGIN FILTER BY CATEGORY -->
-                  <h4 class="mt-4">Genre(s):</h4>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Drama</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Suspense</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Action</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Comedy</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Crime</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Period</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label><input type="checkbox" class="icheck" /> War</label>
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Fantasy</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Romance</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Adventure</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Animation</label
-                    >
-                  </div>
-                  <div class="checkbox">
-                    <label
-                      ><input type="checkbox" class="icheck" /> Horror</label
-                    >
-                  </div>
+                    <!-- BEGIN FILTER BY LANGUAGE -->
+                    <h5 class="mt-4">Language</h5>
+                    <div class="dropdown">
+                      <a
+                        class="btn btn-info dropdown-toggle"
+                        href="#"
+                        role="button"
+                        id="dropdownMenuLink"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        Choose language
+                      </a>
+
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuLink"
+                      >
+                        <a class="dropdown-item" href="#">All</a>
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Chinese</a>
+                        <a class="dropdown-item" href="#">French</a>
+                        <a class="dropdown-item" href="#">Spanish</a>
+                        <a class="dropdown-item" href="#">German</a>
+                        <a class="dropdown-item" href="#">Russian</a>
+                        <a class="dropdown-item" href="#">Hebrew</a>
+                        <a class="dropdown-item" href="#">Swedish</a>
+                        <a class="dropdown-item" href="#">Portugese</a>
+                        <a class="dropdown-item" href="#">Italian</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                        <a class="dropdown-item" href="#">Korean</a>
+                        <a class="dropdown-item" href="#">Indian</a>
+                      </div>
+                    </div>
+                    <!-- END FILTER BY LANGUAGE -->
+
+                    <!-- BEGIN FILTER BY CATEGORY -->
+                    <h5 class="mt-4">Genre(s):</h5>
+                    <div class="row mt-3">
+                      <div class="col-6 px-0">
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Drama</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Suspense</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Action</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Comedy</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Crime</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Period</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-6 px-0">
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" /> War</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Fantasy</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Romance</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Adventure</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Animation</label
+                          >
+                        </div>
+                        <div class="checkbox">
+                          <label
+                            ><input type="checkbox" class="icheck" />
+                            Horror</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      class="btn btn-info mt-3"
+                      type="submit"
+                      value="Submit"
+                    />
+                  </form>
                   <!-- END FILTER BY CATEGORY -->
                 </div>
                 <!-- END FILTERS -->
                 <!-- BEGIN RESULT -->
-                <div class="col-md-9">
-                  <h2><i class="fa fa-file-o"></i> Result</h2>
+                <div class="col-md-8">
+                  <h2><i class="fa fa-film"></i> Discover Movies</h2>
                   <hr />
                   <div class="row">
                     <!-- BEGIN ORDER RESULT -->
                     <div class="col-sm-6">
-                      <div class="btn-group">
-                        <button
-                          type="button"
-                          class="btn btn-default dropdown-toggle"
+                      <div class="dropdown">
+                        <a
+                          class="btn btn-info dropdown-toggle"
+                          href="#"
+                          role="button"
+                          id="dropdownMenuLink"
                           data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
                         >
-                          Order by <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Name</a></li>
-                          <li><a href="#">Date</a></li>
-                          <li><a href="#">View</a></li>
-                          <li><a href="#">Rating</a></li>
-                        </ul>
+                          Order By
+                        </a>
+
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuLink"
+                        >
+                          <a class="dropdown-item" href="#">Rating</a>
+                          <a class="dropdown-item" href="#">Name</a>
+                          <a class="dropdown-item" href="#">Date</a>
+                          <a class="dropdown-item" href="#">Popularity</a>
+                        </div>
                       </div>
                     </div>
                     <!-- END ORDER RESULT -->
-
-                    <div class="col-md-6 text-right">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default active">
-                          <i class="fa fa-list"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
-                          <i class="fa fa-th"></i>
-                        </button>
-                      </div>
-                    </div>
                   </div>
 
                   <!-- BEGIN TABLE RESULT -->
@@ -206,100 +235,196 @@
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">2</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">3</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">4</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">5</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">6</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">7</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td class="number text-center">1</td>
+                          <td class="number text-center">8</td>
                           <td class="image">
                             <img
                               src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg"
                               alt=""
                             />
                           </td>
-                          <td class="product">
-                            <strong>Product 1</strong><br />This is the product
-                            description.
+                          <td class="movie">
+                            <p class="float-left"><strong>Ad Astra</strong></p>
+                            <p class="float-left ml-4">2019-09-17</p>
+                            <p class="float-right ml-4">Rating: 6.1</p>
+                            <p class="float-left mt-0">
+                              The near future, a time when both hope and
+                              hardships drive humanity to look to the stars and
+                              beyond. While a mysterious phenomenon menaces to
+                              destroy life on planet Earth, astronaut Roy
+                              McBride undertakes a mission across the immensity
+                              of space and its many perils to uncover the truth
+                              about a lost expedition that decades before boldly
+                              faced emptiness and silence in search of the
+                              unknown.
+                            </p>
                           </td>
                         </tr>
                       </tbody>
@@ -308,15 +433,29 @@
                   <!-- END TABLE RESULT -->
 
                   <!-- BEGIN PAGINATION -->
-                  <ul class="pagination">
-                    <li class="disabled"><a href="#">«</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
-                  </ul>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
                   <!-- END PAGINATION -->
                 </div>
                 <!-- END RESULT -->
