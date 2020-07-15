@@ -42,94 +42,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 var express_1 = require("express");
 var axios_1 = __importDefault(require("axios"));
+var genreList_1 = require("../genreList");
 var router = express_1.Router();
 exports.router = router;
 //API key
 var key = 'fee9133ff87c8385486979a559ff1687';
-//Genre List
-var genreList = [
-    {
-        id: 28,
-        name: 'Action',
-    },
-    {
-        id: 12,
-        name: 'Adventure',
-    },
-    {
-        id: 16,
-        name: 'Animation',
-    },
-    {
-        id: 35,
-        name: 'Comedy',
-    },
-    {
-        id: 80,
-        name: 'Crime',
-    },
-    {
-        id: 99,
-        name: 'Documentary',
-    },
-    {
-        id: 18,
-        name: 'Drama',
-    },
-    {
-        id: 10751,
-        name: 'Family',
-    },
-    {
-        id: 14,
-        name: 'Fantasy',
-    },
-    {
-        id: 36,
-        name: 'History',
-    },
-    {
-        id: 27,
-        name: 'Horror',
-    },
-    {
-        id: 10402,
-        name: 'Music',
-    },
-    {
-        id: 9648,
-        name: 'Mystery',
-    },
-    {
-        id: 10749,
-        name: 'Romance',
-    },
-    {
-        id: 878,
-        name: 'Science Fiction',
-    },
-    {
-        id: 10770,
-        name: 'TV Movie',
-    },
-    {
-        id: 53,
-        name: 'Thriller',
-    },
-    {
-        id: 10752,
-        name: 'War',
-    },
-    {
-        id: 37,
-        name: 'Western',
-    },
-];
 //filter criteria
 var originalLanguage = 'de';
+/******* year filer **********/
 var year = '2018';
-var genres = ''; //for example, 18,12 drama & adventure -
+/******* genre filter ********/
+//For example: 18,12 Drama & Adventure
 //you can leave %2C at the end
+var genres = '';
 //converting genres strings to genres string acceptable for the API call
 function convert() {
     var args = [];
@@ -138,8 +63,8 @@ function convert() {
     }
     for (var _a = 0, args_1 = args; _a < args_1.length; _a++) {
         var e = args_1[_a];
-        for (var _b = 0, genreList_1 = genreList; _b < genreList_1.length; _b++) {
-            var f = genreList_1[_b];
+        for (var _b = 0, genreList_2 = genreList_1.genreList; _b < genreList_2.length; _b++) {
+            var f = genreList_2[_b];
             if (e === f.name) {
                 e = f.id.toString();
                 genres += e + '%2C';
@@ -150,7 +75,7 @@ function convert() {
 }
 //calling function with sample genres for API call
 convert('Drama', 'Adventure');
-//filter - external API call
+/******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var response, moviesData, error_1;
     return __generator(this, function (_a) {
