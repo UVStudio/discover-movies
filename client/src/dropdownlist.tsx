@@ -1,0 +1,15 @@
+export const dropdownlist = [
+  'English',
+  'Chinese',
+  'French',
+  'Spanish',
+  'German',
+  'Russian',
+  'Hebrew',
+  'Swedish',
+  'Portugese',
+  'Italian',
+  'Japanese',
+  'Korean',
+  'Indian',
+];
