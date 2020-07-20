@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import { router } from './routes/moviesData';
+import { router } from './src/routes/moviesData';
 
 import bodyParser from 'body-parser';
 

@@ -50,7 +50,7 @@ var key = 'fee9133ff87c8385486979a559ff1687';
 //filter criteria
 var originalLanguage = 'de';
 /******* year filer **********/
-var year = '2018';
+var year = '2005';
 /******* genre filter ********/
 //For example: 18,12 Drama & Adventure
 //you can leave %2C at the end
@@ -74,26 +74,31 @@ function convert() {
     return genres;
 }
 //calling function with sample genres for API call
-convert('Drama', 'Adventure');
+convert('Drama');
 /******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, moviesData, error_1;
+    var info, response, moviesData, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=" + year + "&with_genres=" + genres + "&with_original_language=" + originalLanguage)];
+                info = req.query.formData;
+                console.log(info);
+                console.log(typeof info);
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=" + year + "&with_genres=" + genres + "&with_original_language=" + originalLanguage)];
+            case 2:
                 response = _a.sent();
                 moviesData = response.data;
                 res.send(moviesData);
-                return [3 /*break*/, 3];
-            case 2:
+                return [3 /*break*/, 4];
+            case 3:
                 error_1 = _a.sent();
                 console.error(error_1.message);
                 res.status(500).send('Server Error');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); });

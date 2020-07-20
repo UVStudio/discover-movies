@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import { useState, Fragment, useCallback } from 'react';
 import { dropdownlist } from '../dropdownlist';
 import { checkboxes } from '../checkboxes';
@@ -31,12 +32,35 @@ export const Filters = () => {
       const filteredList = checkedItems
         .filter((e) => e.isChecked)
         .map((f) => f.name);
-      setFormData({ ...formData, genres: genres = filteredList });
+      setFormData({
+        ...formData,
+        genres: genres = filteredList,
+      });
     },
-    [checkedItems]
+    [checkedItems, formData]
   );
 
   console.log(formData);
+
+  const onChange = (e: any) => {
+    e.preventDefault();
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const findMovies = async (formData: movieFilter) => {
+    try {
+      const res = await axios.get(`/moviesData?formData=${language},${genres}`);
+      console.log(res.data);
+    } catch (error) {
+      const errors = error.response.data.errors;
+      console.log(errors);
+    }
+  };
+
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    findMovies(formData);
+  };
 
   return (
     <Fragment>
@@ -45,8 +69,7 @@ export const Filters = () => {
           <i className="fa fa-filter"></i> Filters
         </h3>
         <hr />
-
-        <form className="form">
+        <form className="form" onSubmit={(e) => onSubmit(e)}>
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
           <p className="small mt-0 mb-2 low-line-height">
             Please choose range of no more than 3 years. (eg 2011-2013)
@@ -60,12 +83,7 @@ export const Filters = () => {
               className="form-control mb-2"
               placeholder="yyyy"
               value={fromYear}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  fromYear: e.target.value,
-                })
-              }
+              onChange={(e) => onChange(e)}
             />
           </div>
           {/* <input type="hidden" id="dtp_input1" value="" /> */}
@@ -78,9 +96,7 @@ export const Filters = () => {
               className="form-control"
               placeholder="yyyy"
               value={toYear}
-              onChange={(e) =>
-                setFormData({ ...formData, toYear: e.target.value })
-              }
+              onChange={(e) => onChange(e)}
             />
           </div>
           {/* <input type="hidden" id="dtp_input2" value="" /> */}
@@ -88,17 +104,9 @@ export const Filters = () => {
             Language
             <select
               id="language"
+              name="language"
               value={language}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  language: e.target.value,
-                })
-              }
-              // onBlur={(e) =>
-              //   setFormData({ ...formData, language: e.target.value })
-              // }
-              // disabled={!dropdownlist.length}
+              onChange={(e) => onChange(e)}
             >
               {dropdownlist.map((item) => (
                 <option key={item} value={item}>
@@ -121,9 +129,6 @@ export const Filters = () => {
                     className="icheck"
                     onChange={(e) => handleOnChange(e)}
                   />{' '}
-                  {/* {genre.isChecked
-                    ? console.log('item check', genre.name)
-                    : null} */}
                   <label>{genre.name}</label>
                 </div>
               ))}
