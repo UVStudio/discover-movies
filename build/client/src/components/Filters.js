@@ -86,7 +86,7 @@ exports.Filters = function () {
     var _a = react_1.useState({
         fromYear: '',
         toYear: '',
-        language: 'English',
+        language: 'en',
         genres: [],
     }), formData = _a[0], setFormData = _a[1];
     var fromYear = formData.fromYear, toYear = formData.toYear, language = formData.language, genres = formData.genres;
@@ -113,7 +113,7 @@ exports.Filters = function () {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1.default.get("/moviesData?formData=" + language + "," + genres)];
+                    return [4 /*yield*/, axios_1.default.get("/moviesData", { params: { formData: formData } })];
                 case 1:
                     res = _a.sent();
                     console.log(res.data);
@@ -155,8 +155,8 @@ exports.Filters = function () {
           <label htmlFor="Language Dropdown">
             Language
             <select id="language" name="language" value={language} onChange={function (e) { return onChange(e); }}>
-              {dropdownlist_1.dropdownlist.map(function (item) { return (<option key={item} value={item}>
-                  {item}
+              {dropdownlist_1.genreObjList.map(function (genre) { return (<option key={genre.lang} value={genre.code}>
+                  {genre.lang}
                 </option>); })}
             </select>
           </label>

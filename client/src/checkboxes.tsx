@@ -1,24 +1,24 @@
 export const checkboxes = [
   {
-    name: 'drama',
+    name: 'Drama',
     key: 'drama',
     isChecked: false,
     label: 'Drama',
   },
   {
-    name: 'action',
+    name: 'Action',
     key: 'action',
     isChecked: false,
     label: 'Action',
   },
   {
-    name: 'comedy',
+    name: 'Comedy',
     key: 'comedy',
     isChecked: false,
     label: 'Comedy',
   },
   {
-    name: 'crime',
+    name: 'Crime',
     key: 'crime',
     isChecked: false,
     label: 'Crime',

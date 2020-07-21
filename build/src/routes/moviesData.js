@@ -47,13 +47,6 @@ var router = express_1.Router();
 exports.router = router;
 //API key
 var key = 'fee9133ff87c8385486979a559ff1687';
-//filter criteria
-var originalLanguage = 'de';
-/******* year filer **********/
-var year = '2005';
-/******* genre filter ********/
-//For example: 18,12 Drama & Adventure
-//you can leave %2C at the end
 var genres = '';
 //converting genres strings to genres string acceptable for the API call
 function convert() {
@@ -73,21 +66,21 @@ function convert() {
     }
     return genres;
 }
-//calling function with sample genres for API call
-convert('Drama');
 /******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, response, moviesData, error_1;
+    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, response, moviesData, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 info = req.query.formData;
-                console.log(info);
-                console.log(typeof info);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=" + year + "&with_genres=" + genres + "&with_original_language=" + originalLanguage)];
+                infoObj = JSON.parse(info);
+                fromYear = infoObj.fromYear, toYear = infoObj.toYear, language = infoObj.language, genres_1 = infoObj.genres;
+                genreCodes = convert.apply(void 0, genres_1);
+                console.log(genreCodes);
+                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=" + fromYear + "&with_genres=" + genreCodes + "&with_original_language=" + language)];
             case 2:
                 response = _a.sent();
                 moviesData = response.data;

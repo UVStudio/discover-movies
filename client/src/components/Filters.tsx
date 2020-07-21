@@ -1,7 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useState, Fragment, useCallback } from 'react';
-import { dropdownlist } from '../dropdownlist';
+import { genreObjList } from '../dropdownlist';
 import { checkboxes } from '../checkboxes';
 
 type movieFilter = {
@@ -15,7 +15,7 @@ export const Filters = () => {
   const [formData, setFormData] = useState<movieFilter>({
     fromYear: '',
     toYear: '',
-    language: 'English',
+    language: 'en',
     genres: [],
   });
 
@@ -49,7 +49,7 @@ export const Filters = () => {
 
   const findMovies = async (formData: movieFilter) => {
     try {
-      const res = await axios.get(`/moviesData?formData=${language},${genres}`);
+      const res = await axios.get(`/moviesData`, { params: { formData } });
       console.log(res.data);
     } catch (error) {
       const errors = error.response.data.errors;
@@ -108,9 +108,9 @@ export const Filters = () => {
               value={language}
               onChange={(e) => onChange(e)}
             >
-              {dropdownlist.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+              {genreObjList.map((genre) => (
+                <option key={genre.lang} value={genre.code}>
+                  {genre.lang}
                 </option>
               ))}
             </select>
