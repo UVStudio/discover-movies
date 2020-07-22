@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { useState, Fragment, useCallback } from 'react';
 import { genreObjList } from '../dropdownlist';
@@ -11,6 +12,14 @@ type movieFilter = {
   genres: string[];
 };
 
+// type moviesDataArray = {
+//   post_path: string;
+//   original_title: string;
+//   release_date: string;
+//   vote_average: string;
+//   overview: string;
+// };
+
 export const Filters = () => {
   const [formData, setFormData] = useState<movieFilter>({
     fromYear: '',
@@ -22,6 +31,11 @@ export const Filters = () => {
   let { fromYear, toYear, language, genres } = formData;
 
   const [checkedItems, setCheckedItems] = useState(checkboxes);
+
+  // const [movieList, setMovieList] = useState()
+  // const movieObj {
+  //   name: ""
+  // }
 
   const handleOnChange = useCallback(
     (e: any) => {
@@ -40,7 +54,9 @@ export const Filters = () => {
     [checkedItems, formData]
   );
 
-  console.log(formData);
+  //console.log(formData);
+
+  const moviesDataArray: any = [];
 
   const onChange = (e: any) => {
     e.preventDefault();
@@ -50,7 +66,40 @@ export const Filters = () => {
   const findMovies = async (formData: movieFilter) => {
     try {
       const res = await axios.get(`/moviesData`, { params: { formData } });
-      console.log(res.data);
+      const moviesData: object[] = res.data;
+      for (const e of moviesData) {
+        moviesDataArray.push(e);
+      }
+      const movieElement = (
+        <tbody>
+          {moviesDataArray &&
+            moviesDataArray.map((movie: any, index: any) => (
+              <tr key={index + 1}>
+                <td className="number text-center">{index + 1}</td>
+                <td className="image">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt="movie-poster"
+                  />
+                </td>
+                <td className="movie">
+                  <p className="float-left">
+                    <strong>{movie.original_title}</strong>
+                  </p>
+                  <p className="float-left ml-4">{movie.release_date}</p>
+                  <p className="float-right ml-4">
+                    Rating: {movie.vote_average}
+                  </p>
+                  <p className="float-left mt-0">{movie.overview}</p>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      );
+      ReactDOM.render(
+        movieElement,
+        document.getElementById('movie-list-table')
+      );
     } catch (error) {
       const errors = error.response.data.errors;
       console.log(errors);
@@ -136,6 +185,77 @@ export const Filters = () => {
           </div>
           <input className="btn btn-info mt-3" type="submit" value="Submit" />
         </form>
+      </div>
+      <div className="col-md-8">
+        <h2>
+          <i className="fa fa-film"></i> Discover Movies
+        </h2>
+        <hr />
+        <div className="row">
+          <div className="col-sm-6">
+            <div className="dropdown">
+              <a
+                className="btn btn-info dropdown-toggle"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                href="/#"
+              >
+                Order By
+              </a>
+
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a className="dropdown-item" href="/#">
+                  Rating
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Name
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Date
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Popularity
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-hover" id="movie-list-table"></table>
+        </div>
+
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <li className="page-item">
+              <a className="page-link" aria-label="Previous" href="/#">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                1
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                2
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                3
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" aria-label="Next" href="/#">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </Fragment>
   );
