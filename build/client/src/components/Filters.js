@@ -109,15 +109,72 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
-    //console.log(formData);
     var moviesDataArray = [];
+    var onClickRelease = function (e) {
+        e.preventDefault();
+        console.log('release');
+    };
+    function compare(key) {
+        return function orderRating(a, b) {
+            var comparison = 0;
+            if (a[key] > b[key]) {
+                comparison = -1;
+            }
+            else if (a[key] < b[key]) {
+                comparison = 1;
+            }
+            return comparison;
+        };
+    }
+    var emptyDiv = null;
+    var onClickVote = function (e) {
+        e.preventDefault();
+        moviesDataArray.sort(compare('vote_average'));
+        react_dom_1.default.render(emptyDiv, document.getElementById('movie-list-table'));
+        produceMovieList();
+    };
+    var onClickPopularity = function (e) {
+        e.preventDefault();
+        moviesDataArray.sort(compare('popularity'));
+        react_dom_1.default.render(emptyDiv, document.getElementById('movie-list-table'));
+        produceMovieList();
+    };
     var onChange = function (e) {
         var _a;
         e.preventDefault();
         setFormData(__assign(__assign({}, formData), (_a = {}, _a[e.target.name] = e.target.value, _a)));
     };
+    function produceMovieList() {
+        var movieElement = (<tbody>
+        {moviesDataArray &&
+            moviesDataArray.map(function (movie, index) { return (<tr key={index + 1}>
+              <td className="number text-center">{index + 1}</td>
+              <td className="image">
+                <img src={movie.poster_path
+                ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                : "/img/noposter.jpg"} alt="movie-poster"/>
+              </td>
+              <td className="movie">
+                <p className="my-1">
+                  <strong>{movie.original_title}</strong>
+                </p>
+                <p className="my-1">
+                  <em>Release Date: {movie.release_date}</em>
+                </p>
+                <p className="my-1">
+                  <em>Rating: {movie.vote_average}</em>
+                </p>
+                <p className="my-1">
+                  <em>Popularity: {movie.popularity}</em>
+                </p>
+                <p className="my-1">{movie.overview}</p>
+              </td>
+            </tr>); })}
+      </tbody>);
+        react_dom_1.default.render(movieElement, document.getElementById('movie-list-table'));
+    }
     var findMovies = function (formData) { return __awaiter(void 0, void 0, void 0, function () {
-        var res, moviesData, _i, moviesData_1, e, movieElement, error_1, errors;
+        var res, moviesData, _i, moviesData_1, e, error_1, errors;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -130,31 +187,8 @@ exports.Filters = function () {
                         e = moviesData_1[_i];
                         moviesDataArray.push(e);
                     }
-                    console.log(moviesDataArray);
-                    movieElement = (<tbody>
-          {moviesDataArray &&
-                        moviesDataArray.map(function (movie, index) { return (<tr key={index + 1}>
-                <td className="number text-center">{index + 1}</td>
-                <td className="image">
-                  <img src={movie.poster_path
-                            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
-                            : "/img/noposter.jpg"} alt="movie-poster"/>
-                </td>
-                <td className="movie">
-                  <p className="my-1">
-                    <strong>{movie.original_title}</strong>
-                  </p>
-                  <p className="my-1">
-                    <em>Release Date: {movie.release_date}</em>
-                  </p>
-                  <p className="my-1">
-                    <em>Rating: {movie.vote_average}</em>
-                  </p>
-                  <p className="my-1">{movie.overview}</p>
-                </td>
-              </tr>); })}
-        </tbody>);
-                    react_dom_1.default.render(movieElement, document.getElementById('movie-list-table'));
+                    moviesDataArray.sort(compare('popularity'));
+                    produceMovieList();
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
@@ -177,9 +211,6 @@ exports.Filters = function () {
         <hr />
         <form className="form mb-5" onSubmit={function (e) { return onSubmit(e); }}>
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
-          <p className="small mt-0 mb-2 low-line-height">
-            Please choose range of no more than 3 years. (eg 2011-2013)
-          </p>
           From
           <div className="input-group">
             <input type="text" id="fromYear" name="fromYear" className="form-control mb-2" placeholder="yyyy" value={fromYear} onChange={function (e) { return onChange(e); }}/>
@@ -221,21 +252,19 @@ exports.Filters = function () {
               </a>
 
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a className="dropdown-item" href="/#">
+                <a className="dropdown-item" href="/#" onClick={function (e) { return onClickVote(e); }}>
                   Rating
                 </a>
-                <a className="dropdown-item" href="/#">
-                  Name
-                </a>
-                <a className="dropdown-item" href="/#">
-                  Date
-                </a>
-                <a className="dropdown-item" href="/#">
+                <a className="dropdown-item" href="/#" onClick={function (e) { return onClickPopularity(e); }}>
                   Popularity
                 </a>
               </div>
             </div>
           </div>
+          <p className="small mt-2">
+            The result will show a maximum of 20 most popular movies per year
+            released from the chosen selections in the filters.
+          </p>
         </div>
         <div className="table-responsive">
           <table className="table table-hover" id="movie-list-table"></table>

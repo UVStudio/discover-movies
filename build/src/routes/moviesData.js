@@ -68,7 +68,7 @@ function convert() {
 }
 /******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, yearsArray_1, from_1, to_1, loop_1, moviesDataArray, i, response, moviesData, results, key_1, error_1;
+    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, yearsArray_1, from_1, to_1, addYears_1, moviesDataArray, i, response, moviesData, results, key_1, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -82,7 +82,7 @@ router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0,
                 yearsArray_1 = [];
                 from_1 = parseInt(fromYear);
                 to_1 = parseInt(toYear);
-                loop_1 = function () {
+                addYears_1 = function () {
                     if (from_1 == to_1) {
                         yearsArray_1.push(to_1.toString());
                         return;
@@ -90,10 +90,10 @@ router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0,
                     else {
                         yearsArray_1.push(from_1.toString());
                         from_1 = from_1 + 1;
-                        loop_1();
+                        addYears_1();
                     }
                 };
-                loop_1();
+                addYears_1();
                 moviesDataArray = [];
                 i = 0;
                 _a.label = 2;

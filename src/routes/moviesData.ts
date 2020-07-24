@@ -44,17 +44,17 @@ router.get('/moviesData', async (req: Request, res: Response) => {
     const to = parseInt(toYear);
 
     //recursive
-    const loop = () => {
+    const addYears = () => {
       if (from == to) {
         yearsArray.push(to.toString());
         return;
       } else {
         yearsArray.push(from.toString());
         from = from + 1;
-        loop();
+        addYears();
       }
     };
-    loop();
+    addYears();
 
     const moviesDataArray = [];
 
@@ -62,7 +62,6 @@ router.get('/moviesData', async (req: Request, res: Response) => {
       const response = await axios.get(
         `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=${yearsArray[i]}&with_genres=${genreCodes}&with_original_language=${language}`
       );
-
       const moviesData = response.data;
       const results = moviesData.results;
       for (const key in results) {

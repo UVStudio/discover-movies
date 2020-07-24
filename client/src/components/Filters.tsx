@@ -49,14 +49,84 @@ export const Filters = () => {
     [checkedItems, formData]
   );
 
-  //console.log(formData);
-
   const moviesDataArray: any = [];
+
+  const onClickRelease = (e: any) => {
+    e.preventDefault();
+    console.log('release');
+  };
+
+  function compare(key: string) {
+    return function orderRating(a: any, b: any) {
+      let comparison = 0;
+      if (a[key] > b[key]) {
+        comparison = -1;
+      } else if (a[key] < b[key]) {
+        comparison = 1;
+      }
+      return comparison;
+    };
+  }
+
+  const emptyDiv: any = null;
+
+  const onClickVote = (e: any) => {
+    e.preventDefault();
+    moviesDataArray.sort(compare('vote_average'));
+    ReactDOM.render(emptyDiv, document.getElementById('movie-list-table'));
+    produceMovieList();
+  };
+
+  const onClickPopularity = (e: any) => {
+    e.preventDefault();
+    moviesDataArray.sort(compare('popularity'));
+    ReactDOM.render(emptyDiv, document.getElementById('movie-list-table'));
+    produceMovieList();
+  };
 
   const onChange = (e: any) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  function produceMovieList() {
+    const movieElement = (
+      <tbody>
+        {moviesDataArray &&
+          moviesDataArray.map((movie: any, index: any) => (
+            <tr key={index + 1}>
+              <td className="number text-center">{index + 1}</td>
+              <td className="image">
+                <img
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      : `/img/noposter.jpg`
+                  }
+                  alt="movie-poster"
+                />
+              </td>
+              <td className="movie">
+                <p className="my-1">
+                  <strong>{movie.original_title}</strong>
+                </p>
+                <p className="my-1">
+                  <em>Release Date: {movie.release_date}</em>
+                </p>
+                <p className="my-1">
+                  <em>Rating: {movie.vote_average}</em>
+                </p>
+                <p className="my-1">
+                  <em>Popularity: {movie.popularity}</em>
+                </p>
+                <p className="my-1">{movie.overview}</p>
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    );
+    ReactDOM.render(movieElement, document.getElementById('movie-list-table'));
+  }
 
   const findMovies = async (formData: movieFilter) => {
     try {
@@ -65,43 +135,8 @@ export const Filters = () => {
       for (const e of moviesData) {
         moviesDataArray.push(e);
       }
-      console.log(moviesDataArray);
-      const movieElement = (
-        <tbody>
-          {moviesDataArray &&
-            moviesDataArray.map((movie: any, index: any) => (
-              <tr key={index + 1}>
-                <td className="number text-center">{index + 1}</td>
-                <td className="image">
-                  <img
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                        : `/img/noposter.jpg`
-                    }
-                    alt="movie-poster"
-                  />
-                </td>
-                <td className="movie">
-                  <p className="my-1">
-                    <strong>{movie.original_title}</strong>
-                  </p>
-                  <p className="my-1">
-                    <em>Release Date: {movie.release_date}</em>
-                  </p>
-                  <p className="my-1">
-                    <em>Rating: {movie.vote_average}</em>
-                  </p>
-                  <p className="my-1">{movie.overview}</p>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      );
-      ReactDOM.render(
-        movieElement,
-        document.getElementById('movie-list-table')
-      );
+      moviesDataArray.sort(compare('popularity'));
+      produceMovieList();
     } catch (error) {
       const errors = error.response.data.errors;
       console.log(errors);
@@ -122,9 +157,6 @@ export const Filters = () => {
         <hr />
         <form className="form mb-5" onSubmit={(e) => onSubmit(e)}>
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
-          <p className="small mt-0 mb-2 low-line-height">
-            Please choose range of no more than 3 years. (eg 2011-2013)
-          </p>
           From
           <div className="input-group">
             <input
@@ -208,21 +240,27 @@ export const Filters = () => {
               </a>
 
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a className="dropdown-item" href="/#">
+                <a
+                  className="dropdown-item"
+                  href="/#"
+                  onClick={(e) => onClickVote(e)}
+                >
                   Rating
                 </a>
-                <a className="dropdown-item" href="/#">
-                  Name
-                </a>
-                <a className="dropdown-item" href="/#">
-                  Date
-                </a>
-                <a className="dropdown-item" href="/#">
+                <a
+                  className="dropdown-item"
+                  href="/#"
+                  onClick={(e) => onClickPopularity(e)}
+                >
                   Popularity
                 </a>
               </div>
             </div>
           </div>
+          <p className="small mt-2">
+            The result will show a maximum of 20 most popular movies per year
+            released from the chosen selections in the filters.
+          </p>
         </div>
         <div className="table-responsive">
           <table className="table table-hover" id="movie-list-table"></table>
