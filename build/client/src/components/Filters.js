@@ -78,10 +78,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Filters = void 0;
 var React = __importStar(require("react"));
+var react_dom_1 = __importDefault(require("react-dom"));
 var axios_1 = __importDefault(require("axios"));
 var react_1 = require("react");
 var dropdownlist_1 = require("../dropdownlist");
 var checkboxes_1 = require("../checkboxes");
+// type moviesDataArray = {
+//   post_path: string;
+//   original_title: string;
+//   release_date: string;
+//   vote_average: string;
+//   overview: string;
+// };
 exports.Filters = function () {
     var _a = react_1.useState({
         fromYear: '',
@@ -101,14 +109,15 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
-    console.log(formData);
+    //console.log(formData);
+    var moviesDataArray = [];
     var onChange = function (e) {
         var _a;
         e.preventDefault();
         setFormData(__assign(__assign({}, formData), (_a = {}, _a[e.target.name] = e.target.value, _a)));
     };
     var findMovies = function (formData) { return __awaiter(void 0, void 0, void 0, function () {
-        var res, error_1, errors;
+        var res, moviesData, _i, moviesData_1, e, movieElement, error_1, errors;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -116,7 +125,36 @@ exports.Filters = function () {
                     return [4 /*yield*/, axios_1.default.get("/moviesData", { params: { formData: formData } })];
                 case 1:
                     res = _a.sent();
-                    console.log(res.data);
+                    moviesData = res.data;
+                    for (_i = 0, moviesData_1 = moviesData; _i < moviesData_1.length; _i++) {
+                        e = moviesData_1[_i];
+                        moviesDataArray.push(e);
+                    }
+                    console.log(moviesDataArray);
+                    movieElement = (<tbody>
+          {moviesDataArray &&
+                        moviesDataArray.map(function (movie, index) { return (<tr key={index + 1}>
+                <td className="number text-center">{index + 1}</td>
+                <td className="image">
+                  <img src={movie.poster_path
+                            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                            : "/img/noposter.jpg"} alt="movie-poster"/>
+                </td>
+                <td className="movie">
+                  <p className="my-1">
+                    <strong>{movie.original_title}</strong>
+                  </p>
+                  <p className="my-1">
+                    <em>Release Date: {movie.release_date}</em>
+                  </p>
+                  <p className="my-1">
+                    <em>Rating: {movie.vote_average}</em>
+                  </p>
+                  <p className="my-1">{movie.overview}</p>
+                </td>
+              </tr>); })}
+        </tbody>);
+                    react_dom_1.default.render(movieElement, document.getElementById('movie-list-table'));
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
@@ -137,7 +175,7 @@ exports.Filters = function () {
           <i className="fa fa-filter"></i> Filters
         </h3>
         <hr />
-        <form className="form" onSubmit={function (e) { return onSubmit(e); }}>
+        <form className="form mb-5" onSubmit={function (e) { return onSubmit(e); }}>
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
           <p className="small mt-0 mb-2 low-line-height">
             Please choose range of no more than 3 years. (eg 2011-2013)
@@ -146,20 +184,18 @@ exports.Filters = function () {
           <div className="input-group">
             <input type="text" id="fromYear" name="fromYear" className="form-control mb-2" placeholder="yyyy" value={fromYear} onChange={function (e) { return onChange(e); }}/>
           </div>
-          
           To
           <div className="input-group">
             <input type="text" id="toYear" name="toYear" className="form-control" placeholder="yyyy" value={toYear} onChange={function (e) { return onChange(e); }}/>
           </div>
-          
-          <label htmlFor="Language Dropdown">
-            Language
-            <select id="language" name="language" value={language} onChange={function (e) { return onChange(e); }}>
-              {dropdownlist_1.genreObjList.map(function (genre) { return (<option key={genre.lang} value={genre.code}>
-                  {genre.lang}
-                </option>); })}
-            </select>
+          <label htmlFor="Language Dropdown" className="langauge-label mr-2">
+            Language:{'  '}
           </label>
+          <select id="language" name="language" className="btn btn-info dropdown-toggle" value={language} onChange={function (e) { return onChange(e); }}>
+            {dropdownlist_1.genreObjList.map(function (genre) { return (<option key={genre.lang} value={genre.code}>
+                {genre.lang}
+              </option>); })}
+          </select>
           <h5 className="mt-4">Genre(s):</h5>
           <div className="row mt-3">
             <div className="col-6 px-0">
@@ -171,6 +207,69 @@ exports.Filters = function () {
           </div>
           <input className="btn btn-info mt-3" type="submit" value="Submit"/>
         </form>
+      </div>
+      <div className="col-md-8">
+        <h2>
+          <i className="fa fa-film"></i> Discover Movies
+        </h2>
+        <hr />
+        <div className="row">
+          <div className="col-sm-6">
+            <div className="dropdown">
+              <a className="btn btn-info dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/#">
+                Order By
+              </a>
+
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a className="dropdown-item" href="/#">
+                  Rating
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Name
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Date
+                </a>
+                <a className="dropdown-item" href="/#">
+                  Popularity
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-hover" id="movie-list-table"></table>
+        </div>
+
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <li className="page-item">
+              <a className="page-link" aria-label="Previous" href="/#">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                1
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                2
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="/#">
+                3
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" aria-label="Next" href="/#">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </react_1.Fragment>);
 };

@@ -32,11 +32,6 @@ export const Filters = () => {
 
   const [checkedItems, setCheckedItems] = useState(checkboxes);
 
-  // const [movieList, setMovieList] = useState()
-  // const movieObj {
-  //   name: ""
-  // }
-
   const handleOnChange = useCallback(
     (e: any) => {
       const index = e.target.value;
@@ -79,7 +74,11 @@ export const Filters = () => {
                 <td className="number text-center">{index + 1}</td>
                 <td className="image">
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                        : `/img/noposter.jpg`
+                    }
                     alt="movie-poster"
                   />
                 </td>
@@ -121,7 +120,7 @@ export const Filters = () => {
           <i className="fa fa-filter"></i> Filters
         </h3>
         <hr />
-        <form className="form" onSubmit={(e) => onSubmit(e)}>
+        <form className="form mb-5" onSubmit={(e) => onSubmit(e)}>
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
           <p className="small mt-0 mb-2 low-line-height">
             Please choose range of no more than 3 years. (eg 2011-2013)
@@ -138,7 +137,6 @@ export const Filters = () => {
               onChange={(e) => onChange(e)}
             />
           </div>
-          {/* <input type="hidden" id="dtp_input1" value="" /> */}
           To
           <div className="input-group">
             <input
@@ -151,7 +149,6 @@ export const Filters = () => {
               onChange={(e) => onChange(e)}
             />
           </div>
-          {/* <input type="hidden" id="dtp_input2" value="" /> */}
           <label htmlFor="Language Dropdown" className="langauge-label mr-2">
             Language:{'  '}
           </label>

@@ -68,30 +68,58 @@ function convert() {
 }
 /******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, response, moviesData, error_1;
+    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, yearsArray_1, from_1, to_1, loop_1, moviesDataArray, i, response, moviesData, results, key_1, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 info = req.query.formData;
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([1, 6, , 7]);
                 infoObj = JSON.parse(info);
                 fromYear = infoObj.fromYear, toYear = infoObj.toYear, language = infoObj.language, genres_1 = infoObj.genres;
                 genreCodes = convert.apply(void 0, genres_1);
-                console.log(genreCodes);
-                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=" + fromYear + "&with_genres=" + genreCodes + "&with_original_language=" + language)];
+                yearsArray_1 = [];
+                from_1 = parseInt(fromYear);
+                to_1 = parseInt(toYear);
+                loop_1 = function () {
+                    if (from_1 == to_1) {
+                        yearsArray_1.push(to_1.toString());
+                        return;
+                    }
+                    else {
+                        yearsArray_1.push(from_1.toString());
+                        from_1 = from_1 + 1;
+                        loop_1();
+                    }
+                };
+                loop_1();
+                moviesDataArray = [];
+                i = 0;
+                _a.label = 2;
             case 2:
+                if (!(i < yearsArray_1.length)) return [3 /*break*/, 5];
+                return [4 /*yield*/, axios_1.default.get("https://api.themoviedb.org/3/discover/movie?api_key=" + key + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=" + yearsArray_1[i] + "&with_genres=" + genreCodes + "&with_original_language=" + language)];
+            case 3:
                 response = _a.sent();
                 moviesData = response.data;
-                res.send(moviesData);
-                return [3 /*break*/, 4];
-            case 3:
+                results = moviesData.results;
+                for (key_1 in results) {
+                    moviesDataArray.push(results[key_1]);
+                }
+                _a.label = 4;
+            case 4:
+                i++;
+                return [3 /*break*/, 2];
+            case 5:
+                res.send(moviesDataArray);
+                return [3 /*break*/, 7];
+            case 6:
                 error_1 = _a.sent();
                 console.error(error_1.message);
                 res.status(500).send('Server Error');
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); });
