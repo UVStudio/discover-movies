@@ -70,6 +70,7 @@ export const Filters = () => {
       for (const e of moviesData) {
         moviesDataArray.push(e);
       }
+      console.log(moviesDataArray);
       const movieElement = (
         <tbody>
           {moviesDataArray &&
@@ -83,14 +84,16 @@ export const Filters = () => {
                   />
                 </td>
                 <td className="movie">
-                  <p className="float-left">
+                  <p className="my-1">
                     <strong>{movie.original_title}</strong>
                   </p>
-                  <p className="float-left ml-4">{movie.release_date}</p>
-                  <p className="float-right ml-4">
-                    Rating: {movie.vote_average}
+                  <p className="my-1">
+                    <em>Release Date: {movie.release_date}</em>
                   </p>
-                  <p className="float-left mt-0">{movie.overview}</p>
+                  <p className="my-1">
+                    <em>Rating: {movie.vote_average}</em>
+                  </p>
+                  <p className="my-1">{movie.overview}</p>
                 </td>
               </tr>
             ))}
@@ -149,21 +152,22 @@ export const Filters = () => {
             />
           </div>
           {/* <input type="hidden" id="dtp_input2" value="" /> */}
-          <label htmlFor="Language Dropdown">
-            Language
-            <select
-              id="language"
-              name="language"
-              value={language}
-              onChange={(e) => onChange(e)}
-            >
-              {genreObjList.map((genre) => (
-                <option key={genre.lang} value={genre.code}>
-                  {genre.lang}
-                </option>
-              ))}
-            </select>
+          <label htmlFor="Language Dropdown" className="langauge-label mr-2">
+            Language:{'  '}
           </label>
+          <select
+            id="language"
+            name="language"
+            className="btn btn-info dropdown-toggle"
+            value={language}
+            onChange={(e) => onChange(e)}
+          >
+            {genreObjList.map((genre) => (
+              <option key={genre.lang} value={genre.code}>
+                {genre.lang}
+              </option>
+            ))}
+          </select>
           <h5 className="mt-4">Genre(s):</h5>
           <div className="row mt-3">
             <div className="col-6 px-0">

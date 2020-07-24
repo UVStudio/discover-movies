@@ -71,3 +71,8 @@ body {
 .low-line-height {
   line-height: 1.2em;
 }
+
+.langauge-label {
+  font-size: 1.4em;
+  margin-top: 1em;
+}
