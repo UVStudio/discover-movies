@@ -2,18 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.genreObjList = void 0;
 exports.genreObjList = [
-    { lang: 'English', code: 'en' },
     { lang: 'Chinese', code: 'zh' },
+    { lang: 'English', code: 'en' },
     { lang: 'French', code: 'fr' },
-    { lang: 'Spanish', code: 'es' },
     { lang: 'German', code: 'de' },
-    { lang: 'Russian', code: 'ru' },
     { lang: 'Hebrew', code: 'he' },
-    { lang: 'Swedish', code: 'sv' },
-    { lang: 'Portugese', code: 'pt' },
+    { lang: 'Hindi', code: 'hi' },
+    { lang: 'Hungarian', code: 'hu' },
     { lang: 'Italian', code: 'it' },
     { lang: 'Japanese', code: 'ja' },
     { lang: 'Korean', code: 'ko' },
-    { lang: 'Hindi', code: 'hi' },
-    { lang: 'Hungary', code: 'hu' },
+    { lang: 'Portugese', code: 'pt' },
+    { lang: 'Russian', code: 'ru' },
+    { lang: 'Spanish', code: 'es' },
+    { lang: 'Swedish', code: 'sv' },
 ];

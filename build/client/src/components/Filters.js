@@ -83,6 +83,8 @@ var react_1 = require("react");
 var dropdownlist_1 = require("../dropdownlist");
 var checkboxes_1 = require("../checkboxes");
 var MovieList_1 = require("./MovieList");
+var Pagination_1 = require("./Pagination");
+var OrderBy_1 = require("./OrderBy");
 exports.Filters = function () {
     var _a = react_1.useState({
         fromYear: '',
@@ -93,8 +95,10 @@ exports.Filters = function () {
     var _b = react_1.useState(checkboxes_1.checkboxes), checkedItems = _b[0], setCheckedItems = _b[1];
     var _c = react_1.useState([]), movieList = _c[0], setMovieList = _c[1];
     var _d = react_1.useState(false), loading = _d[0], setLoading = _d[1];
-    var _e = react_1.useState(10), postsPerPage = _e[0], setPostsPerPage = _e[1];
+    var _e = react_1.useState(1), currentPage = _e[0], setCurrentPage = _e[1];
+    var _f = react_1.useState(10), moviesPerPage = _f[0], setMoviesPerPage = _f[1];
     var fromYear = formData.fromYear, toYear = formData.toYear, language = formData.language, genres = formData.genres;
+    //check box logic
     var handleOnChange = react_1.useCallback(function (e) {
         var index = e.target.value;
         var items = __spreadArrays(checkedItems);
@@ -105,6 +109,7 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
+    //modular sorting function for rating and popularity
     function compare(key) {
         return function orderRating(a, b) {
             var comparison = 0;
@@ -124,6 +129,7 @@ exports.Filters = function () {
         var voteList = __spreadArrays(movieList);
         voteList.sort(compare('vote_average'));
         setMovieList(voteList);
+        console.log(voteList);
         setLoading(false);
     };
     var onClickPopularity = function (e) {
@@ -132,13 +138,16 @@ exports.Filters = function () {
         var popList = __spreadArrays(movieList);
         popList.sort(compare('popularity'));
         setMovieList(popList);
+        console.log(popList);
         setLoading(false);
     };
+    //updates formData
     var onChange = function (e) {
         var _a;
         e.preventDefault();
         setFormData(__assign(__assign({}, formData), (_a = {}, _a[e.target.name] = e.target.value, _a)));
     };
+    //API call to Node
     var findMovies = function (formData) { return __awaiter(void 0, void 0, void 0, function () {
         var moviesDataArray, res, moviesData, _i, moviesData_1, e, error_1, errors;
         return __generator(this, function (_a) {
@@ -170,9 +179,17 @@ exports.Filters = function () {
             }
         });
     }); };
+    //call API call to Node
     var onSubmit = function (e) {
         e.preventDefault();
         findMovies(formData);
+    };
+    //Pagination
+    var indexOfLastMovie = currentPage * moviesPerPage;
+    var indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+    var currentMovies = movieList.slice(indexOfFirstMovie, indexOfLastMovie);
+    var paginate = function (pageNumber) {
+        setCurrentPage(pageNumber);
     };
     return (<react_1.Fragment>
       <div className="col-md-4">
@@ -200,7 +217,7 @@ exports.Filters = function () {
           </select>
           <h5 className="mt-4">Genre(s):</h5>
           <div className="row mt-3">
-            <div className="col-6 px-0">
+            <div className="col-8 px-0">
               {checkboxes_1.checkboxes.map(function (genre, index) { return (<div key={index} className="checkbox">
                   <input type="checkbox" id={genre.name} name={genre.name} value={index} checked={genre.isChecked} className="icheck" onChange={function (e) { return handleOnChange(e); }}/>{' '}
                   <label>{genre.name}</label>
@@ -212,68 +229,26 @@ exports.Filters = function () {
       </div>
       <div className="col-md-8">
         <h2>
-          <i className="fa fa-film"></i> Discover Movies
+          <i className="fa fa-film"></i> Discover Films
         </h2>
         <hr />
         <div className="row">
           <div className="col-sm-6">
-            <div className="dropdown">
-              <a className="btn btn-info dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/#">
-                Order By
-              </a>
-
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a className="dropdown-item" href="/#" onClick={function (e) { return onClickVote(e); }}>
-                  Rating
-                </a>
-                <a className="dropdown-item" href="/#" onClick={function (e) { return onClickPopularity(e); }}>
-                  Popularity
-                </a>
-              </div>
-            </div>
+            <OrderBy_1.OrderBy onClickVote={onClickVote} onClickPopularity={onClickPopularity}/>
           </div>
           <p className="small mt-2">
             The result will show a maximum of 20 most popular movies per year
-            released from the chosen selections in the filters.
+            released according to the chosen selections in the filters.
           </p>
         </div>
         <div className="table-responsive">
           <table className="table table-hover" id="movie-list-table">
             <tbody>
-              <MovieList_1.MovieList movieList={movieList} loading={loading}/>
+              <MovieList_1.MovieList movieList={currentMovies} loading={loading}/>
             </tbody>
           </table>
         </div>
-
-        <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link" aria-label="Previous" href="/#">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" aria-label="Next" href="/#">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Pagination_1.Pagination moviesPerPage={moviesPerPage} totalMovies={movieList.length} paginate={paginate}/>
       </div>
     </react_1.Fragment>);
 };

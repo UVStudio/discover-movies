@@ -1,9 +1,11 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useState, useEffect, Fragment, useCallback } from 'react';
+import { useState, Fragment, useCallback } from 'react';
 import { genreObjList } from '../dropdownlist';
 import { checkboxes } from '../checkboxes';
 import { MovieList } from './MovieList';
+import { Pagination } from './Pagination';
+import { OrderBy } from './OrderBy';
 
 type movieFilter = {
   fromYear: string;
@@ -22,10 +24,12 @@ export const Filters = () => {
   const [checkedItems, setCheckedItems] = useState(checkboxes);
   const [movieList, setMovieList] = useState<object[]>([]);
   const [loading, setLoading] = useState(false);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [moviesPerPage, setMoviesPerPage] = useState(10);
 
   let { fromYear, toYear, language, genres } = formData;
 
+  //check box logic
   const handleOnChange = useCallback(
     (e: any) => {
       const index = e.target.value;
@@ -43,6 +47,7 @@ export const Filters = () => {
     [checkedItems, formData]
   );
 
+  //modular sorting function for rating and popularity
   function compare(key: string) {
     return function orderRating(a: any, b: any) {
       let comparison = 0;
@@ -62,6 +67,7 @@ export const Filters = () => {
     let voteList: object[] = [...movieList];
     voteList.sort(compare('vote_average'));
     setMovieList(voteList);
+    console.log(voteList);
     setLoading(false);
   };
 
@@ -71,14 +77,17 @@ export const Filters = () => {
     let popList: object[] = [...movieList];
     popList.sort(compare('popularity'));
     setMovieList(popList);
+    console.log(popList);
     setLoading(false);
   };
 
+  //updates formData
   const onChange = (e: any) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //API call to Node
   const findMovies = async (formData: movieFilter) => {
     const moviesDataArray: object[] = [];
     try {
@@ -97,9 +106,19 @@ export const Filters = () => {
     }
   };
 
+  //call API call to Node
   const onSubmit = (e: any) => {
     e.preventDefault();
     findMovies(formData);
+  };
+
+  //Pagination
+  const indexOfLastMovie = currentPage * moviesPerPage;
+  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+  const currentMovies = movieList.slice(indexOfFirstMovie, indexOfLastMovie);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -153,7 +172,7 @@ export const Filters = () => {
           </select>
           <h5 className="mt-4">Genre(s):</h5>
           <div className="row mt-3">
-            <div className="col-6 px-0">
+            <div className="col-8 px-0">
               {checkboxes.map((genre, index) => (
                 <div key={index} className="checkbox">
                   <input
@@ -175,84 +194,33 @@ export const Filters = () => {
       </div>
       <div className="col-md-8">
         <h2>
-          <i className="fa fa-film"></i> Discover Movies
+          <i className="fa fa-film"></i> Discover Films
         </h2>
         <hr />
         <div className="row">
           <div className="col-sm-6">
-            <div className="dropdown">
-              <a
-                className="btn btn-info dropdown-toggle"
-                role="button"
-                id="dropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                href="/#"
-              >
-                Order By
-              </a>
-
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a
-                  className="dropdown-item"
-                  href="/#"
-                  onClick={(e) => onClickVote(e)}
-                >
-                  Rating
-                </a>
-                <a
-                  className="dropdown-item"
-                  href="/#"
-                  onClick={(e) => onClickPopularity(e)}
-                >
-                  Popularity
-                </a>
-              </div>
-            </div>
+            <OrderBy
+              onClickVote={onClickVote}
+              onClickPopularity={onClickPopularity}
+            />
           </div>
           <p className="small mt-2">
             The result will show a maximum of 20 most popular movies per year
-            released from the chosen selections in the filters.
+            released according to the chosen selections in the filters.
           </p>
         </div>
         <div className="table-responsive">
           <table className="table table-hover" id="movie-list-table">
             <tbody>
-              <MovieList movieList={movieList} loading={loading} />
+              <MovieList movieList={currentMovies} loading={loading} />
             </tbody>
           </table>
         </div>
-
-        <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link" aria-label="Previous" href="/#">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" aria-label="Next" href="/#">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Pagination
+          moviesPerPage={moviesPerPage}
+          totalMovies={movieList.length}
+          paginate={paginate}
+        />
       </div>
     </Fragment>
   );
