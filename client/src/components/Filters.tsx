@@ -1,9 +1,9 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { useState, Fragment, useCallback } from 'react';
+import { useState, useEffect, Fragment, useCallback } from 'react';
 import { genreObjList } from '../dropdownlist';
 import { checkboxes } from '../checkboxes';
+import { MovieList } from './MovieList';
 
 type movieFilter = {
   fromYear: string;
@@ -12,14 +12,6 @@ type movieFilter = {
   genres: string[];
 };
 
-// type moviesDataArray = {
-//   post_path: string;
-//   original_title: string;
-//   release_date: string;
-//   vote_average: string;
-//   overview: string;
-// };
-
 export const Filters = () => {
   const [formData, setFormData] = useState<movieFilter>({
     fromYear: '',
@@ -27,10 +19,12 @@ export const Filters = () => {
     language: 'en',
     genres: [],
   });
+  const [checkedItems, setCheckedItems] = useState(checkboxes);
+  const [movieList, setMovieList] = useState<object[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [postsPerPage, setPostsPerPage] = useState(10);
 
   let { fromYear, toYear, language, genres } = formData;
-
-  const [checkedItems, setCheckedItems] = useState(checkboxes);
 
   const handleOnChange = useCallback(
     (e: any) => {
@@ -49,13 +43,6 @@ export const Filters = () => {
     [checkedItems, formData]
   );
 
-  const moviesDataArray: any = [];
-
-  const onClickRelease = (e: any) => {
-    e.preventDefault();
-    console.log('release');
-  };
-
   function compare(key: string) {
     return function orderRating(a: any, b: any) {
       let comparison = 0;
@@ -68,20 +55,23 @@ export const Filters = () => {
     };
   }
 
-  const emptyDiv: any = null;
-
+  //remember to copy to a new object before mutating and setting state to it.
   const onClickVote = (e: any) => {
     e.preventDefault();
-    moviesDataArray.sort(compare('vote_average'));
-    ReactDOM.render(emptyDiv, document.getElementById('movie-list-table'));
-    produceMovieList();
+    setLoading(true);
+    let voteList: object[] = [...movieList];
+    voteList.sort(compare('vote_average'));
+    setMovieList(voteList);
+    setLoading(false);
   };
 
   const onClickPopularity = (e: any) => {
     e.preventDefault();
-    moviesDataArray.sort(compare('popularity'));
-    ReactDOM.render(emptyDiv, document.getElementById('movie-list-table'));
-    produceMovieList();
+    setLoading(true);
+    let popList: object[] = [...movieList];
+    popList.sort(compare('popularity'));
+    setMovieList(popList);
+    setLoading(false);
   };
 
   const onChange = (e: any) => {
@@ -89,54 +79,18 @@ export const Filters = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  function produceMovieList() {
-    const movieElement = (
-      <tbody>
-        {moviesDataArray &&
-          moviesDataArray.map((movie: any, index: any) => (
-            <tr key={index + 1}>
-              <td className="number text-center">{index + 1}</td>
-              <td className="image">
-                <img
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                      : `/img/noposter.jpg`
-                  }
-                  alt="movie-poster"
-                />
-              </td>
-              <td className="movie">
-                <p className="my-1">
-                  <strong>{movie.original_title}</strong>
-                </p>
-                <p className="my-1">
-                  <em>Release Date: {movie.release_date}</em>
-                </p>
-                <p className="my-1">
-                  <em>Rating: {movie.vote_average}</em>
-                </p>
-                <p className="my-1">
-                  <em>Popularity: {movie.popularity}</em>
-                </p>
-                <p className="my-1">{movie.overview}</p>
-              </td>
-            </tr>
-          ))}
-      </tbody>
-    );
-    ReactDOM.render(movieElement, document.getElementById('movie-list-table'));
-  }
-
   const findMovies = async (formData: movieFilter) => {
+    const moviesDataArray: object[] = [];
     try {
+      setLoading(true);
       const res = await axios.get(`/moviesData`, { params: { formData } });
       const moviesData: object[] = res.data;
       for (const e of moviesData) {
         moviesDataArray.push(e);
       }
       moviesDataArray.sort(compare('popularity'));
-      produceMovieList();
+      setMovieList(moviesDataArray);
+      setLoading(false);
     } catch (error) {
       const errors = error.response.data.errors;
       console.log(errors);
@@ -263,7 +217,11 @@ export const Filters = () => {
           </p>
         </div>
         <div className="table-responsive">
-          <table className="table table-hover" id="movie-list-table"></table>
+          <table className="table table-hover" id="movie-list-table">
+            <tbody>
+              <MovieList movieList={movieList} loading={loading} />
+            </tbody>
+          </table>
         </div>
 
         <nav aria-label="Page navigation example">

@@ -78,18 +78,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Filters = void 0;
 var React = __importStar(require("react"));
-var react_dom_1 = __importDefault(require("react-dom"));
 var axios_1 = __importDefault(require("axios"));
 var react_1 = require("react");
 var dropdownlist_1 = require("../dropdownlist");
 var checkboxes_1 = require("../checkboxes");
-// type moviesDataArray = {
-//   post_path: string;
-//   original_title: string;
-//   release_date: string;
-//   vote_average: string;
-//   overview: string;
-// };
+var MovieList_1 = require("./MovieList");
 exports.Filters = function () {
     var _a = react_1.useState({
         fromYear: '',
@@ -97,8 +90,11 @@ exports.Filters = function () {
         language: 'en',
         genres: [],
     }), formData = _a[0], setFormData = _a[1];
-    var fromYear = formData.fromYear, toYear = formData.toYear, language = formData.language, genres = formData.genres;
     var _b = react_1.useState(checkboxes_1.checkboxes), checkedItems = _b[0], setCheckedItems = _b[1];
+    var _c = react_1.useState([]), movieList = _c[0], setMovieList = _c[1];
+    var _d = react_1.useState(false), loading = _d[0], setLoading = _d[1];
+    var _e = react_1.useState(10), postsPerPage = _e[0], setPostsPerPage = _e[1];
+    var fromYear = formData.fromYear, toYear = formData.toYear, language = formData.language, genres = formData.genres;
     var handleOnChange = react_1.useCallback(function (e) {
         var index = e.target.value;
         var items = __spreadArrays(checkedItems);
@@ -109,11 +105,6 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
-    var moviesDataArray = [];
-    var onClickRelease = function (e) {
-        e.preventDefault();
-        console.log('release');
-    };
     function compare(key) {
         return function orderRating(a, b) {
             var comparison = 0;
@@ -126,61 +117,40 @@ exports.Filters = function () {
             return comparison;
         };
     }
-    var emptyDiv = null;
+    //remember to copy to a new object before mutating and setting state to it.
     var onClickVote = function (e) {
         e.preventDefault();
-        moviesDataArray.sort(compare('vote_average'));
-        react_dom_1.default.render(emptyDiv, document.getElementById('movie-list-table'));
-        produceMovieList();
+        setLoading(true);
+        var voteList = __spreadArrays(movieList);
+        voteList.sort(compare('vote_average'));
+        setMovieList(voteList);
+        setLoading(false);
     };
     var onClickPopularity = function (e) {
         e.preventDefault();
-        moviesDataArray.sort(compare('popularity'));
-        react_dom_1.default.render(emptyDiv, document.getElementById('movie-list-table'));
-        produceMovieList();
+        setLoading(true);
+        var popList = __spreadArrays(movieList);
+        popList.sort(compare('popularity'));
+        setMovieList(popList);
+        setLoading(false);
     };
     var onChange = function (e) {
         var _a;
         e.preventDefault();
         setFormData(__assign(__assign({}, formData), (_a = {}, _a[e.target.name] = e.target.value, _a)));
     };
-    function produceMovieList() {
-        var movieElement = (<tbody>
-        {moviesDataArray &&
-            moviesDataArray.map(function (movie, index) { return (<tr key={index + 1}>
-              <td className="number text-center">{index + 1}</td>
-              <td className="image">
-                <img src={movie.poster_path
-                ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
-                : "/img/noposter.jpg"} alt="movie-poster"/>
-              </td>
-              <td className="movie">
-                <p className="my-1">
-                  <strong>{movie.original_title}</strong>
-                </p>
-                <p className="my-1">
-                  <em>Release Date: {movie.release_date}</em>
-                </p>
-                <p className="my-1">
-                  <em>Rating: {movie.vote_average}</em>
-                </p>
-                <p className="my-1">
-                  <em>Popularity: {movie.popularity}</em>
-                </p>
-                <p className="my-1">{movie.overview}</p>
-              </td>
-            </tr>); })}
-      </tbody>);
-        react_dom_1.default.render(movieElement, document.getElementById('movie-list-table'));
-    }
     var findMovies = function (formData) { return __awaiter(void 0, void 0, void 0, function () {
-        var res, moviesData, _i, moviesData_1, e, error_1, errors;
+        var moviesDataArray, res, moviesData, _i, moviesData_1, e, error_1, errors;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1.default.get("/moviesData", { params: { formData: formData } })];
+                    moviesDataArray = [];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    setLoading(true);
+                    return [4 /*yield*/, axios_1.default.get("/moviesData", { params: { formData: formData } })];
+                case 2:
                     res = _a.sent();
                     moviesData = res.data;
                     for (_i = 0, moviesData_1 = moviesData; _i < moviesData_1.length; _i++) {
@@ -188,14 +158,15 @@ exports.Filters = function () {
                         moviesDataArray.push(e);
                     }
                     moviesDataArray.sort(compare('popularity'));
-                    produceMovieList();
-                    return [3 /*break*/, 3];
-                case 2:
+                    setMovieList(moviesDataArray);
+                    setLoading(false);
+                    return [3 /*break*/, 4];
+                case 3:
                     error_1 = _a.sent();
                     errors = error_1.response.data.errors;
                     console.log(errors);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -267,7 +238,11 @@ exports.Filters = function () {
           </p>
         </div>
         <div className="table-responsive">
-          <table className="table table-hover" id="movie-list-table"></table>
+          <table className="table table-hover" id="movie-list-table">
+            <tbody>
+              <MovieList_1.MovieList movieList={movieList} loading={loading}/>
+            </tbody>
+          </table>
         </div>
 
         <nav aria-label="Page navigation example">
