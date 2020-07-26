@@ -1,5 +1,5 @@
-import express, { Router, Request, Response } from 'express';
-import { router } from './src/routes/moviesData';
+import express from 'express';
+import { router } from './routes/moviesData';
 
 import bodyParser from 'body-parser';
 
@@ -11,3 +11,5 @@ app.use(router);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
+
+///notes
