@@ -8,6 +8,8 @@
     "start:run": "nodemon build/index.js",
     "start": "concurrently npm:start:*",
     "client": "npm start --prefix client",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
