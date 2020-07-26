@@ -9,8 +9,7 @@
     "start": "concurrently npm:start:*",
     "client": "npm start --prefix client",
     "tsc": "tsc",
-    "postinstall": "npm run tsc",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "postinstall": "npm run tsc"
   },
   "repository": {
     "type": "git",
