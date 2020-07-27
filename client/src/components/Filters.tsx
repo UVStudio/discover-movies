@@ -6,6 +6,7 @@ import { checkboxes } from '../checkboxes';
 import { MovieList } from './MovieList';
 import { Pagination } from './Pagination';
 import { OrderBy } from './OrderBy';
+import { yearsRange } from './Years';
 
 type movieFilter = {
   fromYear: string;
@@ -16,8 +17,8 @@ type movieFilter = {
 
 export const Filters = () => {
   const [formData, setFormData] = useState<movieFilter>({
-    fromYear: '',
-    toYear: '',
+    fromYear: '2019',
+    toYear: '2020',
     language: 'en',
     genres: [],
   });
@@ -46,6 +47,7 @@ export const Filters = () => {
     },
     [checkedItems, formData]
   );
+  console.log(genres);
 
   //modular sorting function for rating and popularity
   function compare(key: string) {
@@ -67,7 +69,7 @@ export const Filters = () => {
     let voteList: object[] = [...movieList];
     voteList.sort(compare('vote_average'));
     setMovieList(voteList);
-    console.log(voteList);
+    //console.log(voteList);
     setLoading(false);
   };
 
@@ -77,7 +79,7 @@ export const Filters = () => {
     let popList: object[] = [...movieList];
     popList.sort(compare('popularity'));
     setMovieList(popList);
-    console.log(popList);
+    //console.log(popList);
     setLoading(false);
   };
 
@@ -109,6 +111,14 @@ export const Filters = () => {
   //call API call to Node
   const onSubmit = (e: any) => {
     e.preventDefault();
+    if (fromYear > toYear) {
+      alert("Please make sure 'From' is earlier than 'To'.");
+      return;
+    }
+    if (genres.length < 1) {
+      alert('Please check off at least one genre category.');
+      return;
+    }
     findMovies(formData);
   };
 
@@ -132,27 +142,37 @@ export const Filters = () => {
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
           From
           <div className="input-group">
-            <input
-              type="text"
+            <select
               id="fromYear"
               name="fromYear"
               className="form-control mb-2"
               placeholder="yyyy"
               value={fromYear}
               onChange={(e) => onChange(e)}
-            />
+            >
+              {yearsRange.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
           </div>
           To
           <div className="input-group">
-            <input
-              type="text"
+            <select
               id="toYear"
               name="toYear"
               className="form-control"
               placeholder="yyyy"
               value={toYear}
               onChange={(e) => onChange(e)}
-            />
+            >
+              {yearsRange.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
           </div>
           <label htmlFor="Language Dropdown" className="langauge-label mr-2">
             Language:{'  '}

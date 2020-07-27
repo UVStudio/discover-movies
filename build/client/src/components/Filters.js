@@ -85,10 +85,11 @@ var checkboxes_1 = require("../checkboxes");
 var MovieList_1 = require("./MovieList");
 var Pagination_1 = require("./Pagination");
 var OrderBy_1 = require("./OrderBy");
+var Years_1 = require("./Years");
 exports.Filters = function () {
     var _a = react_1.useState({
-        fromYear: '',
-        toYear: '',
+        fromYear: '2019',
+        toYear: '2020',
         language: 'en',
         genres: [],
     }), formData = _a[0], setFormData = _a[1];
@@ -109,6 +110,7 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
+    console.log(genres);
     //modular sorting function for rating and popularity
     function compare(key) {
         return function orderRating(a, b) {
@@ -129,7 +131,7 @@ exports.Filters = function () {
         var voteList = __spreadArrays(movieList);
         voteList.sort(compare('vote_average'));
         setMovieList(voteList);
-        console.log(voteList);
+        //console.log(voteList);
         setLoading(false);
     };
     var onClickPopularity = function (e) {
@@ -138,7 +140,7 @@ exports.Filters = function () {
         var popList = __spreadArrays(movieList);
         popList.sort(compare('popularity'));
         setMovieList(popList);
-        console.log(popList);
+        //console.log(popList);
         setLoading(false);
     };
     //updates formData
@@ -182,6 +184,14 @@ exports.Filters = function () {
     //call API call to Node
     var onSubmit = function (e) {
         e.preventDefault();
+        if (fromYear > toYear) {
+            alert("Please make sure 'From' is earlier than 'To'.");
+            return;
+        }
+        if (genres.length < 1) {
+            alert('Please check off at least one genre category.');
+            return;
+        }
         findMovies(formData);
     };
     //Pagination
@@ -201,11 +211,19 @@ exports.Filters = function () {
           <h5 className="mt-4 mb-1">Year of Release Range</h5>
           From
           <div className="input-group">
-            <input type="text" id="fromYear" name="fromYear" className="form-control mb-2" placeholder="yyyy" value={fromYear} onChange={function (e) { return onChange(e); }}/>
+            <select id="fromYear" name="fromYear" className="form-control mb-2" placeholder="yyyy" value={fromYear} onChange={function (e) { return onChange(e); }}>
+              {Years_1.yearsRange.map(function (year) { return (<option key={year} value={year}>
+                  {year}
+                </option>); })}
+            </select>
           </div>
           To
           <div className="input-group">
-            <input type="text" id="toYear" name="toYear" className="form-control" placeholder="yyyy" value={toYear} onChange={function (e) { return onChange(e); }}/>
+            <select id="toYear" name="toYear" className="form-control" placeholder="yyyy" value={toYear} onChange={function (e) { return onChange(e); }}>
+              {Years_1.yearsRange.map(function (year) { return (<option key={year} value={year}>
+                  {year}
+                </option>); })}
+            </select>
           </div>
           <label htmlFor="Language Dropdown" className="langauge-label mr-2">
             Language:{'  '}
