@@ -86,13 +86,14 @@ var MovieList_1 = require("./MovieList");
 var Pagination_1 = require("./Pagination");
 var OrderBy_1 = require("./OrderBy");
 var Years_1 = require("./Years");
+var resetForm = {
+    fromYear: '2019',
+    toYear: '2020',
+    language: 'en',
+    genres: [],
+};
 exports.Filters = function () {
-    var _a = react_1.useState({
-        fromYear: '2019',
-        toYear: '2020',
-        language: 'en',
-        genres: [],
-    }), formData = _a[0], setFormData = _a[1];
+    var _a = react_1.useState(resetForm), formData = _a[0], setFormData = _a[1];
     var _b = react_1.useState(checkboxes_1.checkboxes), checkedItems = _b[0], setCheckedItems = _b[1];
     var _c = react_1.useState([]), movieList = _c[0], setMovieList = _c[1];
     var _d = react_1.useState(false), loading = _d[0], setLoading = _d[1];
@@ -110,7 +111,7 @@ exports.Filters = function () {
             .map(function (f) { return f.name; });
         setFormData(__assign(__assign({}, formData), { genres: genres = filteredList }));
     }, [checkedItems, formData]);
-    console.log(genres);
+    //console.log(genres);
     //modular sorting function for rating and popularity
     function compare(key) {
         return function orderRating(a, b) {
@@ -193,6 +194,7 @@ exports.Filters = function () {
             return;
         }
         findMovies(formData);
+        console.log(formData);
     };
     //Pagination
     var indexOfLastMovie = currentPage * moviesPerPage;

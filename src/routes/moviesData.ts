@@ -13,9 +13,9 @@ type movieFilter = {
 //API key
 const key: string = 'fee9133ff87c8385486979a559ff1687';
 
-let genres = '';
 //converting genres strings to genres string acceptable for the API call
 function convert(...args: any): any {
+  let genres = '';
   for (let e of args) {
     for (let f of genreList) {
       if (e === f.name) {
@@ -68,6 +68,7 @@ router.get('/moviesData', async (req: Request, res: Response) => {
         moviesDataArray.push(results[key]);
       }
     }
+    console.log(genreCodes);
     res.send(moviesDataArray);
   } catch (error) {
     console.error(error.message);

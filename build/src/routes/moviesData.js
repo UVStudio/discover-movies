@@ -47,13 +47,13 @@ var router = express_1.Router();
 exports.router = router;
 //API key
 var key = 'fee9133ff87c8385486979a559ff1687';
-var genres = '';
 //converting genres strings to genres string acceptable for the API call
 function convert() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
+    var genres = '';
     for (var _a = 0, args_1 = args; _a < args_1.length; _a++) {
         var e = args_1[_a];
         for (var _b = 0, genreList_2 = genreList_1.genreList; _b < genreList_2.length; _b++) {
@@ -68,7 +68,7 @@ function convert() {
 }
 /******  API call to get movies ******/
 router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, infoObj, fromYear, toYear, language, genres_1, genreCodes, yearsArray_1, from_1, to_1, addYears_1, moviesDataArray, i, response, moviesData, results, key_1, error_1;
+    var info, infoObj, fromYear, toYear, language, genres, genreCodes, yearsArray_1, from_1, to_1, addYears_1, moviesDataArray, i, response, moviesData, results, key_1, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -77,8 +77,8 @@ router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0,
             case 1:
                 _a.trys.push([1, 6, , 7]);
                 infoObj = JSON.parse(info);
-                fromYear = infoObj.fromYear, toYear = infoObj.toYear, language = infoObj.language, genres_1 = infoObj.genres;
-                genreCodes = convert.apply(void 0, genres_1);
+                fromYear = infoObj.fromYear, toYear = infoObj.toYear, language = infoObj.language, genres = infoObj.genres;
+                genreCodes = convert.apply(void 0, genres);
                 yearsArray_1 = [];
                 from_1 = parseInt(fromYear);
                 to_1 = parseInt(toYear);
@@ -112,6 +112,7 @@ router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0,
                 i++;
                 return [3 /*break*/, 2];
             case 5:
+                console.log(genreCodes);
                 res.send(moviesDataArray);
                 return [3 /*break*/, 7];
             case 6:

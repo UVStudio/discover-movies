@@ -15,13 +15,15 @@ type movieFilter = {
   genres: string[];
 };
 
+const resetForm = {
+  fromYear: '2019',
+  toYear: '2020',
+  language: 'en',
+  genres: [],
+};
+
 export const Filters = () => {
-  const [formData, setFormData] = useState<movieFilter>({
-    fromYear: '2019',
-    toYear: '2020',
-    language: 'en',
-    genres: [],
-  });
+  const [formData, setFormData] = useState<movieFilter>(resetForm);
   const [checkedItems, setCheckedItems] = useState(checkboxes);
   const [movieList, setMovieList] = useState<object[]>([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,7 @@ export const Filters = () => {
     },
     [checkedItems, formData]
   );
-  console.log(genres);
+  //console.log(genres);
 
   //modular sorting function for rating and popularity
   function compare(key: string) {
@@ -120,6 +122,7 @@ export const Filters = () => {
       return;
     }
     findMovies(formData);
+    console.log(formData);
   };
 
   //Pagination
