@@ -7,6 +7,7 @@ var express_1 = __importDefault(require("express"));
 var moviesData_1 = require("./routes/moviesData");
 var path_1 = __importDefault(require("path"));
 var body_parser_1 = __importDefault(require("body-parser"));
+require("dotenv/config");
 var app = express_1.default();
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(moviesData_1.router);

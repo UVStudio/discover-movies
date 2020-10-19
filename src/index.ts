@@ -3,6 +3,8 @@ import { router } from './routes/moviesData';
 import path from 'path';
 import bodyParser from 'body-parser';
 
+import 'dotenv/config'
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));

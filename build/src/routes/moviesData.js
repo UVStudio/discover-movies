@@ -46,7 +46,7 @@ var genreList_1 = require("../genreList");
 var router = express_1.Router();
 exports.router = router;
 //API key
-var key = 'fee9133ff87c8385486979a559ff1687';
+var key = process.env.APIKEY;
 //converting genres strings to genres string acceptable for the API call
 function convert() {
     var args = [];
@@ -112,7 +112,6 @@ router.get('/moviesData', function (req, res) { return __awaiter(void 0, void 0,
                 i++;
                 return [3 /*break*/, 2];
             case 5:
-                console.log(genreCodes);
                 res.send(moviesDataArray);
                 return [3 /*break*/, 7];
             case 6:
